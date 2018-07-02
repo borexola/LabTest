@@ -1,0 +1,55 @@
+﻿@model LABTest.Models.FileUploadModel
+
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-md-12">
+    <h2>Get Leader Number</h2>
+    <hr />
+</div>
+
+<script>
+    function showNotification(notificationType, msg) {
+        toastr[notificationType](msg);
+    }
+</script>
+
+
+@using (Html.BeginForm("Upload", "FileUpload", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <label for="upload">
+            Upload CSV file:
+        </label>
+        <input id="File1" name="file" type="file" />
+    </div>
+    <input id="btnSubmit" type="submit" value="Upload file" class="btn btn-success" />
+
+}
+
+@if (Model.Uploaded)
+{
+    <div class="alert alert-success">
+        <strong>Leader is: </strong>@Model.Leader
+    </div>
+    <script>showNotification('success', '@Model.Message')</script>
+}
+else if (!string.IsNullOrEmpty(Model.Message))
+{
+    <script>showNotification('error', '@Model.Message')</script>
+}
+
+<input id="hfFileUploaded" value="false" type="hidden" />
+
+@section scripts{
+
+    <script type="text/javascript">
+        function showNotification(notificationType, msg) {
+            toastr[notificationType](msg);
+        }
+    </script>
+}
